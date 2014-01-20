@@ -67,6 +67,8 @@
     
     NSDictionary *movie = self.movies[indexPath.row];
     
+    
+    
     cell.movieTitleLabel.text = [movie objectForKey:@"title"];
     cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
     cell.castingLabel.text = @"Casting";
@@ -90,8 +92,12 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:selectedCell];
     Movie *movie = self.movies[indexPath.row];
     
+    NSLog(@"User tapped at index:%i", indexPath.row);
     MovieDetailsViewController *movieDetailsViewController = (MovieDetailsViewController *)segue.destinationViewController;
     movieDetailsViewController.movie = movie;
+    
+    //NSLog(@"%@ ", movie.casting);
+    
 }
 
 
@@ -102,11 +108,36 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
-        NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSError *error;
         
-        self.movies = [object objectForKey:@"movies"];
+        NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         
-        [self.tableView reloadData];
+        
+        if (object)
+        {
+            self.movies = [object objectForKey:@"movies"];
+            [self.tableView reloadData];
+            
+           // NSMutableArray *movies = [NSMutableArray array];
+            //for (id moviesDict in [object objectForKey:@"movies"]) {
+              //  NSString *title = [moviesDict objectForKey:@"title"];
+                //NSString *synopsis = [moviesDict objectForKey:@"synopsis"];
+                
+                //[movies addObject:title];
+               // [movies addObject:synopsis];
+                
+         //       [movies addObject:[Movie movieTitle:title movieSynopsis:synopsis]];
+        
+        
+        // Movie *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        //self.movies = [object objecForKey:@"movies"];
+
+        }
+        else
+        {
+            //error while retrieving movie listing
+            NSLog(@"There was an error while retrieving your movie listing. Check URL and verity that website is available.");
+        }
     }];
 }
 
