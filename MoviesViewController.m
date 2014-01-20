@@ -8,6 +8,8 @@
 
 #import "MoviesViewController.h"
 #import "MovieCell.h"
+#import "UIImageView+AFNetworking.h"
+
 
 @interface MoviesViewController ()
 
@@ -59,6 +61,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MovieCell *cell = (MovieCell *)[tableView dequeueReusableCellWithIdentifier:@"MovieCell"];
+   // UIImageView *imageView;
     
     NSDictionary *movie = self.movies[indexPath.row];
     
@@ -66,6 +69,12 @@
     cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
     cell.castingLabel.text = @"Casting";
     //cell.castingLabel.text = [movie objectForKey:@"characters"];
+    //cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[movie objectForKey:@"posters"]]]];
+
+    // print the Posters.profile
+    cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://content7.flixster.com/movie/11/17/33/11173373_pro.jpg"]]];
+    
+    
     return cell;
 }
 
