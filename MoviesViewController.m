@@ -9,6 +9,8 @@
 #import "MoviesViewController.h"
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "Movie.h"
+#import "MovieDetailsViewController.h"
 
 
 @interface MoviesViewController ()
@@ -78,7 +80,20 @@
     return cell;
 }
 
+
+
+
 #pragma mark - Private methods
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    UITableViewCell *selectedCell = (UITableViewCell *)sender;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:selectedCell];
+    Movie *movie = self.movies[indexPath.row];
+    
+    MovieDetailsViewController *movieDetailsViewController = (MovieDetailsViewController *)segue.destinationViewController;
+    movieDetailsViewController.movie = movie;
+}
+
 
 - (void)reload
 {
