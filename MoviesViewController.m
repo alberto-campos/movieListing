@@ -100,6 +100,7 @@
     MovieDetailsViewController *movieDetailsViewController = (MovieDetailsViewController *)segue.destinationViewController;
     movieDetailsViewController.movie = movie;
     
+    NSLog(@"prepare for Segue %@ ", movie.synopsis);
     //NSLog(@"%@ ", movie.casting);
     
 }
@@ -125,40 +126,50 @@
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        
-        NSError *error;
-        
-        NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        
-        
-        if (object)
-        {
-            self.movies = [object objectForKey:@"movies"];
-            [self.tableView reloadData];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+     {
+         NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+         
+         // checking connectivity
+         if (!connectionError && statusCode == 200)
+         {
+            NSError *error;
+            NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];            
             
-           // NSMutableArray *movies = [NSMutableArray array];
-            //for (id moviesDict in [object objectForKey:@"movies"]) {
-              //  NSString *title = [moviesDict objectForKey:@"title"];
-                //NSString *synopsis = [moviesDict objectForKey:@"synopsis"];
+            if (object)
+            {
+                self.movies = [object objectForKey:@"movies"];
+                [self.tableView reloadData];
                 
-                //[movies addObject:title];
-               // [movies addObject:synopsis];
+               // NSMutableArray *movies = [NSMutableArray array];
+                //for (id moviesDict in [object objectForKey:@"movies"]) {
+                  //  NSString *title = [moviesDict objectForKey:@"title"];
+                    //NSString *synopsis = [moviesDict objectForKey:@"synopsis"];
+                    
+                    //[movies addObject:title];
+                   // [movies addObject:synopsis];
+                    
+             //       [movies addObject:[Movie movieTitle:title movieSynopsis:synopsis]];
                 
-         //       [movies addObject:[Movie movieTitle:title movieSynopsis:synopsis]];
-        
-        
-        // Movie *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        //self.movies = [object objecForKey:@"movies"];
+            // Movie *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            //self.movies = [object objecForKey:@"movies"];
 
-        }
-        else
-        {
-            //error while retrieving movie listing
-            NSLog(@"There was an error while retrieving your movie listing. Check URL and verity that website is available.");
-        }
+            }
+            else
+            {
+                //error while retrieving movie listing
+                NSLog(@"There was an error while retrieving your movie listing. Check URL and verity that website is available.");
+            }
+             
+         } // end IF cheking connectivity
+         else
+         {
+             
+         }
     }];
     NSLog(@"Loading data. Please wait.");
+     
 }
 
 @end
