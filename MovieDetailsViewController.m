@@ -10,6 +10,8 @@
 
 @interface MovieDetailsViewController ()
 
+- (void)reload;
+
 @end
 
 @implementation MovieDetailsViewController
@@ -30,9 +32,10 @@
 {
     [super viewDidLoad];
 	
-   // self.titleHeadLabel.text = movie.title;
-    self.summaryDetailsLabel.text = movie.synopsis;
-    self.titleALabel.text = movie.title;
+  //  self.titleHeadLabel.text = movie.title;
+  //  self.summaryDetailsLabel.text = @"hello";
+   // self.titleALabel.text = @"alberto";
+  //  self.titleALabel.text = movie.title;
     
 }
 
@@ -40,6 +43,32 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self reload];
+    }
+    return self;
+}
+
+
+#pragma mark - Private methods
+
+
+
+
+- (void)reload
+{
+   // self.summaryDetailsLabel.text = @"hello";
+   // self.titleALabel.text = @"alberto";
+    
+    self.titleHeadLabel.text = movie.title;
+    self.titleALabel.text = movie.title;
+    
 }
 
 @end

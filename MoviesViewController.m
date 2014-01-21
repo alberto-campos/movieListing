@@ -14,10 +14,16 @@
 
 
 @interface MoviesViewController ()
+{
+    UIRefreshControl *refreshControl;
+}
+
 
 @property (nonatomic, strong) NSArray *movies;
 
--(void)reload;
+-(void) reload;
+-(void) refresh;
+-(void) refreshTableView;
 
 @end
 
@@ -44,7 +50,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    [self refresh];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,8 +74,6 @@
     
     NSDictionary *movie = self.movies[indexPath.row];
     
-    
-    
     cell.movieTitleLabel.text = [movie objectForKey:@"title"];
     cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
     cell.castingLabel.text = @"Casting";
@@ -77,7 +82,6 @@
 
     // print the Posters.profile
     cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://content7.flixster.com/movie/11/17/33/11173373_pro.jpg"]]];
-    
     
     return cell;
 }
@@ -101,7 +105,22 @@
 }
 
 
-- (void)reload
+-(void) refresh
+{
+    refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshTableView) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:refreshControl];
+    
+}
+
+
+-(void) refreshTableView {
+    [self.tableView reloadData];
+    NSLog(@"Refreshing data. Please wait.");
+    [refreshControl endRefreshing];
+
+}
+- (void) reload
 {
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
     
@@ -139,6 +158,7 @@
             NSLog(@"There was an error while retrieving your movie listing. Check URL and verity that website is available.");
         }
     }];
+    NSLog(@"Loading data. Please wait.");
 }
 
 @end
