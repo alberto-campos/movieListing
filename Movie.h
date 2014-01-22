@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *synopsis;
-@property (nonatomic, strong) NSString *casting;
+@property (nonatomic, strong) NSString *cast;
 
 
 

@@ -32,6 +32,7 @@
 {
     [super viewDidLoad];
 	
+    NSLog(@"Entered Movie details: %@ ", movie.synopsis);
   //  self.titleHeadLabel.text = movie.title;
   //  self.summaryDetailsLabel.text = @"hello";
    // self.titleALabel.text = @"alberto";

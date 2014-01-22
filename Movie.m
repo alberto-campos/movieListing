@@ -15,28 +15,28 @@
     self = [super init];
     if (self) {
         
-        NSDictionary *casting;
+        NSDictionary *cast;
          NSString *s = @"";
         
         self.title = dictionary[@"title"];
         self.synopsis = dictionary[@"synopsis"];
-        casting = dictionary[@"abridged_cast"];
+        cast = dictionary[@"abridged_cast"];
         
  //
-        for (NSString *item in casting)
+        for (NSString *item in cast)
         {
-            NSString *temp = [NSString stringWithFormat:@"%@, ", casting];
+            NSString *temp = [NSString stringWithFormat:@"%@, ", cast];
             s = [s stringByAppendingString:temp];
             
             NSLog(@"end for loop");
         }
         
-        self.casting = s;
+        self.cast = s;
         
         //self.title = @"my title";
         //self.synopsis = @"my synopsis";
         
-        NSLog(@"%@, %@, %@.", self.title, self.synopsis, self.casting);
+        NSLog(@"%@, %@, %@.", self.title, self.synopsis, self.cast);
     }
     
     return self;
