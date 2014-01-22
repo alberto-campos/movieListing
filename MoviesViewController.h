@@ -10,4 +10,6 @@
 
 @interface MoviesViewController : UITableViewController
 
+@property (nonatomic, strong) IBOutlet UILabel *castLabel;
+
 @end

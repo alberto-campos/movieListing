@@ -9,8 +9,8 @@
 #import "MoviesViewController.h"
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
-#import "Movie.h"
 #import "MovieDetailsViewController.h"
+#import "MoviesArray.h"
 
 
 @interface MoviesViewController ()
@@ -50,7 +50,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+
+    MoviesArray *myMovie = [MoviesArray oneMovie];
+    NSString *myTitle = myMovie.title;
+    
+    
+    
     [self refresh];
 }
 
@@ -74,9 +79,26 @@
     
     NSDictionary *movie = self.movies[indexPath.row];
     
-    cell.movieTitleLabel.text = [movie objectForKey:@"title"];
-    cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
-    cell.castingLabel.text = @"Casting";
+    
+    //[_castLabel setText:[[MoviesArray oneMovie] title]];
+   // NSLog(@"%@", _castLabel.text);
+    
+    
+   // cell.movieTitleLabel.text = [movie objectForKey:@"title"];
+    // cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
+    
+    MoviesArray *myMovie = [MoviesArray oneMovie];
+    NSString *myTitle = myMovie.title;
+    
+
+    myMovie.title = @"alberto";
+    
+    //cell.synopsisLabel.text = myMovie.title;
+    //myTitle = @"Hello world";
+    //cell.synopsisLabel.text = myTitle;
+    
+    
+    //cell.castingLabel.text
     //cell.castingLabel.text = [movie objectForKey:@"characters"];
     //cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[movie objectForKey:@"posters"]]]];
 
@@ -124,9 +146,7 @@
 - (void) reload
 {
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
-    
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
          NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
@@ -139,8 +159,38 @@
             
             if (object)
             {
-                self.movies = [object objectForKey:@"movies"];
+                NSMutableArray *movies = [[NSMutableArray alloc] init];
+                for(NSDictionary *movie in [object objectForKey:@"movies"]){
+                    NSMutableDictionary *movieWithDetails = [[NSMutableDictionary alloc] init];
+                    for(NSDictionary *casting in movie[@"abridged_cast"])
+                    {
+                        if([movieWithDetails objectForKey:@"cast"])
+                        {
+                            NSMutableArray *cast = [movieWithDetails objectForKey:@"cast"];
+                            [cast addObject:casting[@"name"]];
+                            [movieWithDetails setObject:cast forKey:@"cast"];
+                        }
+                        else
+                        {
+                            NSMutableArray *cast = [[NSMutableArray alloc] init];
+                            [cast addObject:casting[@"name"]];
+                            [movieWithDetails setObject:cast forKey:@"cast"];
+                        }
+                        
+                    }
+                    [movieWithDetails setObject:movie[@"title"] forKey:@"title"];
+                    [movieWithDetails setObject:movie[@"synopsis"] forKey:@"synopsis"];
+                    [movieWithDetails setObject:movie[@"posters"][@"original"] forKey:@"image"];
+                    MoviesArray *movieElement= [[MoviesArray alloc] initWithDictionary:movieWithDetails];
+                    [movies addObject:movieElement];
+                }
+                
+                self.movies = movies;
                 [self.tableView reloadData];
+                NSLog(@"success... printing movies %@", movies);
+                
+                // // self.movies = [object objectForKey:@"movies"];
+                // // [self.tableView reloadData];
                 
                // NSMutableArray *movies = [NSMutableArray array];
                 //for (id moviesDict in [object objectForKey:@"movies"]) {
@@ -165,7 +215,8 @@
          } // end IF cheking connectivity
          else
          {
-             
+             //error while retrieving movie listing
+             NSLog(@"There was an error while retrieving your movie listing. Try again.");
          }
     }];
     NSLog(@"Loading data. Please wait.");
