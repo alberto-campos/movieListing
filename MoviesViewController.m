@@ -74,36 +74,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
+    
     MovieCell *cell = (MovieCell *)[tableView dequeueReusableCellWithIdentifier:@"MovieCell"];
-   // UIImageView *imageView;
     
-    NSDictionary *movie = self.movies[indexPath.row];
-    
-    
-    //[_castLabel setText:[[MoviesArray oneMovie] title]];
-   // NSLog(@"%@", _castLabel.text);
-    
-    
-   // cell.movieTitleLabel.text = [movie objectForKey:@"title"];
-    // cell.synopsisLabel.text = [movie objectForKey:@"synopsis"];
-    
-    MoviesArray *myMovie = [MoviesArray oneMovie];
-    NSString *myTitle = myMovie.title;
-    
-
-    myMovie.title = @"alberto";
-    
-    //cell.synopsisLabel.text = myMovie.title;
-    //myTitle = @"Hello world";
-    //cell.synopsisLabel.text = myTitle;
-    
-    
-    //cell.castingLabel.text
-    //cell.castingLabel.text = [movie objectForKey:@"characters"];
-    //cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[movie objectForKey:@"posters"]]]];
-
-    // print the Posters.profile
-    cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://content7.flixster.com/movie/11/17/33/11173373_pro.jpg"]]];
+    MoviesArray *movie = self.movies[indexPath.row];
+    cell.movieTitleLabel.text = movie.title;
+    cell.synopsisLabel.text = movie.synopsis;
+    cell.castingLabel.text = movie.cast;
+    cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:movie.image]]];
     
     return cell;
 }
@@ -189,21 +168,6 @@
                 [self.tableView reloadData];
                 NSLog(@"success... printing movies %@", movies);
                 
-                // // self.movies = [object objectForKey:@"movies"];
-                // // [self.tableView reloadData];
-                
-               // NSMutableArray *movies = [NSMutableArray array];
-                //for (id moviesDict in [object objectForKey:@"movies"]) {
-                  //  NSString *title = [moviesDict objectForKey:@"title"];
-                    //NSString *synopsis = [moviesDict objectForKey:@"synopsis"];
-                    
-                    //[movies addObject:title];
-                   // [movies addObject:synopsis];
-                    
-             //       [movies addObject:[Movie movieTitle:title movieSynopsis:synopsis]];
-                
-            // Movie *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            //self.movies = [object objecForKey:@"movies"];
 
             }
             else

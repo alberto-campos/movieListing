@@ -33,7 +33,7 @@
     [super viewDidLoad];
 	
     NSLog(@"Entered Movie details: %@ ", movie.synopsis);
-  //  self.titleHeadLabel.text = movie.title;
+    self.titleHeadLabel.text = movie.title;
   //  self.summaryDetailsLabel.text = @"hello";
    // self.titleALabel.text = @"alberto";
   //  self.titleALabel.text = movie.title;
@@ -64,11 +64,11 @@
 
 - (void)reload
 {
-   // self.summaryDetailsLabel.text = @"hello";
-   // self.titleALabel.text = @"alberto";
+    self.summaryDetailsLabel.text = @"hello";
+   self.titleALabel.text = @"alberto";
     
-    self.titleHeadLabel.text = movie.title;
-    self.titleALabel.text = movie.title;
+   // self.titleHeadLabel.text = movie.title;
+   // self.titleALabel.text = movie.title;
     
 }
 
