@@ -51,9 +51,26 @@
 {
     [super viewDidLoad];
 
-    MoviesArray *myMovie = [MoviesArray oneMovie];
-    NSString *myTitle = myMovie.title;
-
+    nomatchesView = [[UIView alloc] initWithFrame:self.view.frame];
+    nomatchesView.backgroundColor = [UIColor clearColor];
+    
+    matchesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,320,120)];
+    matchesLabel.font = [UIFont boldSystemFontOfSize:18];
+    matchesLabel.numberOfLines = 1;
+    matchesLabel.shadowColor = [UIColor lightTextColor];
+    matchesLabel.textColor = [UIColor darkGrayColor];
+    matchesLabel.shadowOffset = CGSizeMake(0, 1);
+    matchesLabel.backgroundColor = [UIColor clearColor];
+    matchesLabel.textAlignment = NSTextAlignmentCenter;
+    
+    
+    //Here is the text for when loading data or there are no results
+    matchesLabel.text = @"Searching for movies...";
+    
+    
+    nomatchesView.hidden = YES;
+    [nomatchesView addSubview:matchesLabel];
+    [self.tableView insertSubview:nomatchesView belowSubview:self.tableView];
     
     [self refresh];
 }
@@ -68,6 +85,17 @@
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    //If there is no table data, unhide the "No matches" view
+    if(self.movies.count == 0 )
+    {
+        nomatchesView.hidden = NO;
+        //Here is the text for when loading data or there are no results
+        matchesLabel.text = @"No movies found";
+    }
+    else
+    {
+        nomatchesView.hidden = YES;
+    }
     return self.movies.count;
 }
 
@@ -86,9 +114,6 @@
     return cell;
 }
 
-
-
-
 #pragma mark - Private methods
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -100,9 +125,7 @@
     MovieDetailsViewController *movieDetailsViewController = (MovieDetailsViewController *)segue.destinationViewController;
     movieDetailsViewController.movie = movie;
     
-    NSLog(@"prepare for Segue %@ ", movie.synopsis);
-    //NSLog(@"%@ ", movie.casting);
-    
+    NSLog(@"prepare for Segue.");
 }
 
 
@@ -165,9 +188,7 @@
                 
                 self.movies = movies;
                 [self.tableView reloadData];
-                NSLog(@"success... printing movies %@", movies);
                 
-
             }
             else
             {
@@ -183,7 +204,9 @@
          }
     }];
     NSLog(@"Loading data. Please wait.");
-     
+    
+
+    
 }
 
 @end

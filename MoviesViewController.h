@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface MoviesViewController : UITableViewController
+{
+    UIView *nomatchesView;
+    UILabel *matchesLabel; 
+}
 
 @property (nonatomic, strong) IBOutlet UILabel *castLabel;
+
 
 @end
