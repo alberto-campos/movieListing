@@ -53,8 +53,7 @@
 
     MoviesArray *myMovie = [MoviesArray oneMovie];
     NSString *myTitle = myMovie.title;
-    
-    
+
     
     [self refresh];
 }
