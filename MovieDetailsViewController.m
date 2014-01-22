@@ -17,7 +17,7 @@
 @implementation MovieDetailsViewController
 
 
-@synthesize titleHeadLabel, titleALabel, titleBLabel, summaryLabel, summaryDetailsLabel, castLabel, castDetailsLabel, movie;
+@synthesize titleHeadLabel, titleALabel, titleBLabel, summaryLabel, summaryDetailsLabel, castLabel, castDetailsLabel, mainImage, movie;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,13 +31,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    NSLog(@"Entered Movie details: %@ ", movie.synopsis);
-    self.titleHeadLabel.text = movie.title;
-  //  self.summaryDetailsLabel.text = @"hello";
-   // self.titleALabel.text = @"alberto";
-  //  self.titleALabel.text = movie.title;
+	   
+    self.title = self.movie.title;
+    self.titleALabel.text = self.movie.title;
+    self.titleBLabel.text = self.movie.title;
     
+    self.summaryLabel.text = @"Summary";
+    self.summaryDetailsLabel.text = self.movie.synopsis;
+    
+    self.castLabel.text = @"Cast";
+    self.castDetailsLabel.text = self.movie.cast;
+    
+    self.mainImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.movie.image]]];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,16 +65,8 @@
 
 #pragma mark - Private methods
 
-
-
-
 - (void)reload
 {
-    self.summaryDetailsLabel.text = @"hello";
-   self.titleALabel.text = @"alberto";
-    
-   // self.titleHeadLabel.text = movie.title;
-   // self.titleALabel.text = movie.title;
     
 }
 

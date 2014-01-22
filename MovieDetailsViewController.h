@@ -18,6 +18,7 @@
     IBOutlet UILabel *summaryDetailsLabel;
     IBOutlet UILabel *castLabel;
     IBOutlet UILabel *castDetailsLabel;
+    IBOutlet UIImageView *mainImage;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *titleHeadLabel;
@@ -27,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *summaryDetailsLabel;
 @property (nonatomic, retain) IBOutlet UILabel *castLabel;
 @property (nonatomic, retain) IBOutlet UILabel *castDetailsLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *mainImage;
 
 @property (strong) Movie *movie;
 
