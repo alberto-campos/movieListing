@@ -11,6 +11,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "MovieDetailsViewController.h"
 #import "MoviesArray.h"
+#import "SVProgressHUD.h"
 
 
 @interface MoviesViewController ()
@@ -51,6 +52,8 @@
 {
     [super viewDidLoad];
 
+   [SVProgressHUD showWithStatus:@"Retrieving movie results..."];
+    
     nomatchesView = [[UIView alloc] initWithFrame:self.view.frame];
     nomatchesView.backgroundColor = [UIColor clearColor];
     
@@ -89,8 +92,6 @@
     if(self.movies.count == 0 )
     {
         nomatchesView.hidden = NO;
-        //Here is the text for when loading data or there are no results
-        matchesLabel.text = @"No movies found";
     }
     else
     {
@@ -110,7 +111,7 @@
     cell.synopsisLabel.text = movie.synopsis;
     cell.castingLabel.text = movie.cast;
     cell.previewImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:movie.image]]];
-    
+    [SVProgressHUD dismiss];
     return cell;
 }
 
@@ -140,13 +141,22 @@
 
 -(void) refreshTableView {
     [self.tableView reloadData];
+    
+    
+    
     NSLog(@"Refreshing data. Please wait.");
     [refreshControl endRefreshing];
+    
+    
 
 }
 - (void) reload
 {
     NSString *url = @"http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?apikey=g9au4hv6khv6wzvzgt55gpqs";
+    
+   // [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
@@ -205,7 +215,9 @@
     }];
     NSLog(@"Loading data. Please wait.");
     
-
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    
     
 }
 
